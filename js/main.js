@@ -1,14 +1,16 @@
 /* =========================================================
    DarkvoyagerLabs — shared behavior
    Handles: mobile nav toggle, scroll state, hero slider,
-   search + suggestions, and the project detail modal.
+   search + suggestions, project card grids, and the
+   contribute list. Project detail content itself lives on
+   its own static page (project-covers/<slug>/index.html) —
+   this file only builds the card previews that link there.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHero();
   initSearch();
-  initModal();
   initCardGrids();
   initContributeList();
   markActiveNavLink();
@@ -44,11 +46,15 @@ function initNav(){
   }
 }
 
+/* Compares each nav link's fully-resolved URL against the current
+   page, rather than comparing raw href strings — this makes it
+   work correctly from both root pages (href="index.html") and
+   nested pages like project-covers/<slug>/index.html
+   (href="../../index.html"), since the browser resolves an
+   anchor's .pathname for us. */
 function markActiveNavLink(){
-  const path = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll(".nav-link, .nav-mobile-panel a").forEach(link => {
-    const href = link.getAttribute("href");
-    if (href === path || (path === "" && href === "index.html")){
+    if (link.pathname === location.pathname){
       link.classList.add("is-active");
     }
   });
@@ -108,13 +114,13 @@ function initSearch(){
       suggestBox.innerHTML = `<div class="suggestion-empty">No projects match "${escapeHtml(query)}"</div>`;
     } else {
       suggestBox.innerHTML = matches.map(p => `
-        <div class="suggestion-item" data-id="${p.id}" role="option" tabindex="0">
+        <a class="suggestion-item" href="${projectUrl(p)}" role="option">
           <img src="${p.images[0]}" alt="" loading="lazy">
           <div>
             <div class="s-name">${escapeHtml(p.name)}</div>
             <div class="s-type">${escapeHtml(p.type)} · ${escapeHtml(p.platform.join(", "))}</div>
           </div>
-        </div>
+        </a>
       `).join("");
     }
     suggestBox.classList.add("is-open");
@@ -129,25 +135,13 @@ function initSearch(){
     }
   });
 
-  suggestBox.addEventListener("click", (e) => {
-    const item = e.target.closest(".suggestion-item[data-id]");
-    if (!item) return;
-    const project = PROJECTS.find(p => p.id === item.dataset.id);
-    if (project){
-      suggestBox.classList.remove("is-open");
-      input.value = project.name;
-      window.dispatchEvent(new CustomEvent("open-project-modal", { detail: project.id }));
-      // If a project grid exists on the page, also scroll to / filter to it.
-      const card = document.querySelector(`.project-card[data-id="${project.id}"]`);
-      if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
-
-  // Support deep-linking: ?project=<id> opens the modal on load.
+  // Support deep-linking from old links: ?project=<slug or id> redirects
+  // straight to that project's own page.
   const params = new URLSearchParams(location.search);
   const deepLinkId = params.get("project");
   if (deepLinkId){
-    window.dispatchEvent(new CustomEvent("open-project-modal", { detail: deepLinkId }));
+    const project = PROJECTS.find(p => p.slug === deepLinkId || p.id === deepLinkId);
+    if (project) window.location.replace(projectUrl(project));
   }
 }
 
@@ -160,8 +154,14 @@ function escapeHtml(str){
 /* ---------- CARD GRIDS ---------- */
 function initCardGrids(){
   document.querySelectorAll("[data-card-grid]").forEach(grid => {
-    const limit = grid.dataset.limit ? parseInt(grid.dataset.limit, 10) : null;
-    const list = limit ? PROJECTS.slice(0, limit) : PROJECTS;
+    let list = PROJECTS;
+    if (grid.dataset.ids){
+      // Curated, ordered selection (e.g. index.html's featured picks).
+      const ids = grid.dataset.ids.split(",").map(s => s.trim());
+      list = ids.map(id => PROJECTS.find(p => p.id === id || p.slug === id)).filter(Boolean);
+    } else if (grid.dataset.limit){
+      list = PROJECTS.slice(0, parseInt(grid.dataset.limit, 10));
+    }
     renderCards(grid, list);
   });
 
@@ -189,7 +189,7 @@ function renderCards(grid, list){
   grid.innerHTML = list.map(p => {
     const cta = getCta(p);
     return `
-    <button class="project-card" data-id="${p.id}" type="button" aria-haspopup="dialog">
+    <a class="project-card" href="${projectUrl(p)}" data-id="${p.id}">
       <div class="card-media">
         <img src="${p.images[0]}" alt="${escapeHtml(p.name)} cover art" loading="lazy">
         <span class="card-type-badge">${escapeHtml(p.type)}</span>
@@ -204,15 +204,9 @@ function renderCards(grid, list){
           <span class="dl-btn${cta.disabled ? ' is-disabled' : ''}">${cta.label}</span>
         </div>
       </div>
-    </button>
+    </a>
   `;
   }).join("");
-
-  grid.querySelectorAll(".project-card").forEach(card => {
-    card.addEventListener("click", () => {
-      window.dispatchEvent(new CustomEvent("open-project-modal", { detail: card.dataset.id }));
-    });
-  });
 }
 
 /* ---------- CONTRIBUTE LIST (contribute.html) ---------- */
@@ -235,62 +229,7 @@ function initContributeList(){
         <h3>${escapeHtml(p.name)}</h3>
         <div class="help-wanted">${escapeHtml(p.helpWanted || "Looking for contributors")}</div>
       </div>
-      <a class="ci-btn" href="contribute-project.html?project=${encodeURIComponent(p.id)}">Contribute</a>
+      <a class="ci-btn" href="contribute-project.html?project=${encodeURIComponent(p.slug)}">Contribute</a>
     </div>
   `).join("");
-}
-
-/* ---------- MODAL ---------- */
-function initModal(){
-  const overlay = document.querySelector(".modal-overlay");
-  if (!overlay || typeof PROJECTS === "undefined") return;
-  const box = overlay.querySelector(".modal-box");
-  const closeBtn = overlay.querySelector(".modal-close");
-
-  function open(id){
-    const p = PROJECTS.find(pr => pr.id === id);
-    if (!p) return;
-    const cta = getCta(p);
-    box.innerHTML = `
-      <button class="modal-close" aria-label="Close">&times;</button>
-      <img class="modal-hero" src="${p.images[0]}" alt="${escapeHtml(p.name)} cover art">
-      <div class="modal-content">
-        <h2>${escapeHtml(p.name)}</h2>
-        <div class="modal-tags">
-          <span>${escapeHtml(p.type)}</span>
-          ${p.platform.map(pl => `<span>${escapeHtml(pl)}</span>`).join("")}
-          <span>${"\u2605".repeat(Math.round(p.rating))}${"\u2606".repeat(5 - Math.round(p.rating))} ${p.rating.toFixed(1)}</span>
-        </div>
-        <p class="modal-desc">${escapeHtml(p.longDescription || p.description)}</p>
-        ${p.images.length > 1 ? `<div class="modal-shots">${p.images.map(src => `<img src="${src}" alt="${escapeHtml(p.name)} screenshot" loading="lazy">`).join("")}</div>` : ""}
-        <div class="modal-footer">
-          <span class="card-price ${p.price === 0 ? 'is-free' : ''}">${p.price === 0 ? "Free" : "$" + p.price.toFixed(2)}</span>
-          ${cta.disabled
-            ? `<span class="dl-btn is-disabled">${cta.label}</span>`
-            : `<a class="dl-btn" href="${p.download}" style="text-decoration:none;">${cta.label}</a>`}
-        </div>
-        <a href="feedback.html?project=${encodeURIComponent(p.id)}" style="font-family:var(--f-mono); font-size:.78rem; color:var(--cyan); border-bottom:1px dashed var(--cyan);">Leave feedback</a>
-      </div>
-    `;
-    box.querySelector(".modal-close").addEventListener("click", close);
-    overlay.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-    history.replaceState(null, "", `?project=${encodeURIComponent(id)}`);
-  }
-
-  function close(){
-    overlay.classList.remove("is-open");
-    document.body.style.overflow = "";
-    const url = new URL(location.href);
-    url.searchParams.delete("project");
-    history.replaceState(null, "", url.pathname);
-  }
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) close();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") close();
-  });
-  window.addEventListener("open-project-modal", (e) => open(e.detail));
 }

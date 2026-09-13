@@ -1,18 +1,30 @@
 /* =========================================================
    DarkvoyagerLabs — project catalogue
-   Edit this array to add, remove, or update projects. Every
-   card on index.html, projects.html and contribute.html is
-   generated from this single source of truth — you should
-   never need to touch the HTML or CSS to add a new project.
+   Edit this array to add, remove, or update projects. Cards on
+   index.html and projects.html are generated from this single
+   source of truth — you should never need to touch the card
+   markup to add a new project.
 
-   type:     "Game" | "App" | "Linux Distro" | "Software" | "Theme"
+   IMPORTANT — this file only drives the CARD PREVIEWS (thumbnail,
+   short description, price/rating chip, filter buttons, search
+   suggestions). The full write-up Google should index for each
+   project lives in its own static page at
+   project-covers/<slug>/index.html — clicking a card sends the
+   visitor straight there. When you add a project here, also add
+   its matching project-covers/<slug>/index.html page (copy an
+   existing one as a template).
+
+   slug:     folder name under project-covers/ — used for both
+             image paths (slug/1.png) AND the detail page URL
+             (project-covers/slug/index.html). Must be unique.
+   type:     "Game" | "App" | "Linux Distro" | "Browser" | "Theme"
    platform: array of any of "Web","Universal","Android","iOS","Windows","MacOS","Linux"
    price:    number (0 = Free) — displayed with a $ sign when > 0
    rating:   0–5, one decimal allowed
-   images:   [0] is used as the card thumbnail + modal hero,
-             the rest populate the modal screenshot gallery
-   download: link used by the download/play button + modal CTA
-             (ignored when cta is "comingSoon")
+   images:   [0] is used as the card thumbnail; the full gallery
+             on the detail page is generated from this same array
+   download: link used by the download/play button on the detail
+             page (ignored when cta is "comingSoon")
    cta:      controls the button's label + behavior —
                "download"   -> button reads "Download"
                "play"       -> button reads "Play"        (use for
@@ -32,9 +44,10 @@ const PROJECTS = [
 //The Lost Transmission
   {
     id: "thelosttransmission",
+    slug: "thelosttransmission",
     name: "The Lost Transmission",
     type: "Game",
-    platform: ["Windows, Linux"],
+    platform: ["Windows", "Linux"],
     price: 0,
     rating: 0,
     description: "A 3d psychological horror game. The protagonist is on a space mission to uncover the truth hiding in a Research Vessel, with crews onboard, which lost contact with Earth years ago.",
@@ -45,11 +58,12 @@ const PROJECTS = [
     seekingContributors: true,
     helpWanted: "Looking for: 3d modelling"
   },
-  
-  
-//CyberShadows2 (Helios-9))
+
+
+//CyberShadows2 (Helios-9)
   {
     id: "helios-9",
+    slug: "cybershadows2",
     name: "HELIOS-9",
     type: "Game",
     platform: ["Web"],
@@ -62,11 +76,12 @@ const PROJECTS = [
     cta: "play",
     seekingContributors: false
   },
-  
-  
+
+
 //CarDash2
   {
     id: "cardash2",
+    slug: "cardash2",
     name: "CarDash2",
     type: "Game",
     platform: ["Web"],
@@ -77,13 +92,14 @@ const PROJECTS = [
     images: ["project-covers/cardash2/1.png", "project-covers/cardash2/2.png", "project-covers/cardash2/3.png"],
     download: "https://phalcon-coder.github.io/cardash2",
     cta: "play",
-    seekingContributors: false,
+    seekingContributors: false
   },
-  
-  
+
+
 //CyberShadows
   {
     id: "cybershadows",
+    slug: "cybershadows1",
     name: "CyberShadows",
     type: "Game",
     platform: ["Web"],
@@ -96,14 +112,15 @@ const PROJECTS = [
     cta: "play",
     seekingContributors: false
   },
-  
-  
+
+
 //Folio
   {
     id: "folio",
+    slug: "folio",
     name: "Folio",
     type: "App",
-    platform: ["Android, iOS"],
+    platform: ["Android", "iOS"],
     price: 0,
     rating: 0,
     description: "A focused and featureful ebook library. Best suitable on tablets.",
@@ -118,6 +135,7 @@ const PROJECTS = [
 //Smart Homepage
   {
     id: "smarthomepage",
+    slug: "smarthomepage",
     name: "Smart Homepage",
     type: "Theme",
     platform: ["Web"],
@@ -130,19 +148,20 @@ const PROJECTS = [
     cta: "download",
     seekingContributors: false
   },
-  
-  
-  //surfer
+
+
+  //Surfer
     {
     id: "surfer",
+    slug: "surfer",
     name: "Surfer",
     type: "Browser",
-    platform: ["Windows, MacOS, Linux"],
+    platform: ["Windows", "MacOS", "Linux"],
     price: 0,
     rating: 0,
     description: "A privacy-focused PyQT5 based browser searching with duckduckgo. It has a clean, minimal, customisable and memorable look.",
     longDescription: "A privacy-focused PyQT5 based browser searching with duckduckgo. It has a clean, minimal, customisable and memorable look. It has no account nonsense and has a temporary history.",
-    images: ["project-covers/surfer/1.png", "project-covers/surfer/2.png", "project-covers/surfers/3.png"],
+    images: ["project-covers/surfer/1.png", "project-covers/surfer/2.png", "project-covers/surfer/3.png"],
     download: "#",
     cta: "download",
     seekingContributors: false
@@ -152,6 +171,7 @@ const PROJECTS = [
 //LeoOS
   {
     id: "leoos",
+    slug: "leoos",
     name: "LeoOs",
     type: "Linux Distro",
     platform: ["Linux"],
@@ -165,11 +185,12 @@ const PROJECTS = [
     seekingContributors: true,
     helpWanted: "Looking for: testers, someone to look after updates"
   },
-  
-  
+
+
 //PlatinumOS
 {
     id: "platinumos",
+    slug: "platinumos",
     name: "PlatinumOs",
     type: "Linux Distro",
     platform: ["Linux"],
@@ -183,11 +204,12 @@ const PROJECTS = [
     seekingContributors: true,
     helpWanted: "Looking for: designers, testers, someone to look after updates"
   },
-  
-  
+
+
 //Alpha Homepage
   {
-    id: "alphathomepage",
+    id: "alphahomepage",
+    slug: "alphahomepage",
     name: "Alpha Homepage",
     type: "Theme",
     platform: ["Web"],
@@ -203,8 +225,8 @@ const PROJECTS = [
 ];
 
 /* Maps the `cta` field to a button label. Add new keys here if you
-   ever need another button state — every card and the modal both
-   read from this map, so it only needs to be defined once. */
+   ever need another button state — every card reads from this map,
+   so it only needs to be defined once. */
 const CTA_LABELS = {
   download: "Download",
   play: "Play",
@@ -219,4 +241,9 @@ function getCta(project){
 /* Utility: turn platform / type into the small pill labels used on cards. */
 function formatList(arr){
   return arr.join(" · ");
+}
+
+/* Utility: the URL of a project's dedicated detail page. */
+function projectUrl(project){
+  return `project-covers/${project.slug}/index.html`;
 }
