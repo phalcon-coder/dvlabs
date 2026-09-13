@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — DarkvoyagerLabs</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-loader" id="page-loader" aria-hidden="true">
+  <img class="loader-logo" src="logo.png" alt="">
+  <div class="loader-bar"></div>
+  <div class="loader-text">Initializing<span class="cursor">&#9612;</span></div>
+</div>
+<script>
+(function(){
+  var loader = document.getElementById('page-loader');
+  if(!loader) return;
+  var minTime = 400;             // avoids a flash on fast loads
+  var start = Date.now();
+  function hide(){
+    var wait = Math.max(0, minTime - (Date.now() - start));
+    setTimeout(function(){
+      loader.classList.add('is-hidden');
+      setTimeout(function(){ loader.remove(); }, 600);
+    }, wait);
+  }
+  if(document.readyState === 'complete'){ hide(); }
+  else { window.addEventListener('load', hide); }
+  setTimeout(hide, 8000);        // safety net so it never gets stuck
+})();
+</script>
+
+<header>
+  <nav class="site-nav is-solid" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="DarkvoyagerLabs logo">
+      <span class="brand-name">Darkvoyager<span class="accent">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="connect.html">Connect</a>
+      <a class="nav-link" href="contribute.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">&#8801;</button>
+  </nav>
+  <div class="nav-mobile-panel" role="menu">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="connect.html">Connect</a>
+    <a href="contribute.html">Contribute</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="thanks-shell" style="margin-top: 30px;">
+    <div class="big-check">&#10003;</div>
+    <h1>Message sent</h1>
+    <p>Thanks for reaching out — your submission is in. If it's a good fit for an ongoing project, expect an email back soon.</p>
+    <a class="back-link" href="index.html">&larr; Back to home</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <span>&copy; <span id="year"></span> DarkvoyagerLabs. All rights reserved.</span>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="js/main.js"></script>
+</body>
+</html>

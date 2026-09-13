@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribute to a Project — DarkvoyagerLabs</title>
+<meta name="description" content="Tell DarkvoyagerLabs how you'd like to help — coding, art, testing, writing or something else. A short form to get you plugged into an ongoing project.">
+<meta name="author" content="Adib Alam">
+<link rel="canonical" href="https://darkvoyagerlabs.netlify.app/contribute-project.html">
+<meta name="robots" content="noindex, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DarkvoyagerLabs">
+<meta property="og:title" content="Contribute to a Project — DarkvoyagerLabs">
+<meta property="og:description" content="Tell us how you'd like to help with an ongoing DarkvoyagerLabs project.">
+<meta property="og:image" content="https://darkvoyagerlabs.netlify.app/banner.png">
+<meta property="og:url" content="https://darkvoyagerlabs.netlify.app/contribute-project.html">
+
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="page-loader" id="page-loader" aria-hidden="true">
+  <img class="loader-logo" src="logo.png" alt="">
+  <div class="loader-bar"></div>
+  <div class="loader-text">Initializing<span class="cursor">&#9612;</span></div>
+</div>
+<script>
+(function(){
+  var loader = document.getElementById('page-loader');
+  if(!loader) return;
+  var minTime = 400;
+  var start = Date.now();
+  function hide(){
+    var wait = Math.max(0, minTime - (Date.now() - start));
+    setTimeout(function(){
+      loader.classList.add('is-hidden');
+      setTimeout(function(){ loader.remove(); }, 600);
+    }, wait);
+  }
+  if(document.readyState === 'complete'){ hide(); }
+  else { window.addEventListener('load', hide); }
+  setTimeout(hide, 8000);
+})();
+</script>
+
+
+<a class="visually-hidden" href="#main">Skip to content</a>
+
+<header>
+  <nav class="site-nav is-solid" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="DarkvoyagerLabs logo">
+      <span class="brand-name">Darkvoyager<span class="accent">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="connect.html">Connect</a>
+      <a class="nav-link is-active" href="contribute.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">&#8801;</button>
+  </nav>
+  <div class="nav-mobile-panel" role="menu">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="connect.html">Connect</a>
+    <a href="contribute.html">Contribute</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="slim-header">
+    <h1>Contribute to a Project</h1>
+    <p>// a few details and we'll get you plugged in</p>
+  </div>
+
+  <div class="form-shell">
+    <form name="contribute" method="POST" action="/thank-you.html" netlify>
+      <input type="hidden" name="form-name" value="contribute">
+      <p class="honeypot-field">
+        <label>Don't fill this out if you're human: <input name="bot-field"></label>
+      </p>
+
+      <div class="form-field">
+        <label for="f-name">Name <span class="req">*</span></label>
+        <input type="text" id="f-name" name="name" required autocomplete="name">
+      </div>
+
+      <div class="form-field">
+        <label for="f-email">Email <span class="req">*</span></label>
+        <input type="email" id="f-email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="form-field">
+        <label for="f-link">GitHub / Portfolio link</label>
+        <input type="url" id="f-link" name="link" placeholder="https://">
+      </div>
+
+      <div class="form-field">
+        <label for="f-project">Which project? <span class="req">*</span></label>
+        <select id="f-project" name="project" required>
+          <option value="">Select a project…</option>
+          <option value="other">Something new / not sure yet</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>How would you like to help? <span class="req">*</span></label>
+        <div class="checkbox-group">
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Coding"><span>Coding</span></label>
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Art / Design"><span>Art / Design</span></label>
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Testing / QA"><span>Testing / QA</span></label>
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Writing / Docs"><span>Writing / Docs</span></label>
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Translation"><span>Translation</span></label>
+          <label class="checkbox-pill"><input type="checkbox" name="skills[]" value="Other"><span>Other</span></label>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="f-message">Tell us a bit more <span class="req">*</span></label>
+        <textarea id="f-message" name="message" required placeholder="What draws you to this project, and what could you bring to it?"></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Send</button>
+      <p class="form-note">Submissions go straight to DarkvoyagerLabs — expect a reply by email if it's a good fit.</p>
+    </form>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span>&copy; <span id="year"></span> DarkvoyagerLabs. All rights reserved.</span>
+  <a href="feedback.html">Leave Feedback</a>
+</footer>
+
+<script src="js/projects-data.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Populate the project dropdown from js/projects-data.js so every
+// current project shows up automatically — add a project there and
+// it appears here with no further edits needed.
+(function(){
+  const select = document.getElementById("f-project");
+  if (!select || typeof PROJECTS === "undefined") return;
+  const otherOption = select.querySelector('option[value="other"]');
+  PROJECTS.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = p.name;
+    select.insertBefore(opt, otherOption);
+  });
+
+  // Pre-select the project if arriving via a "Contribute" link, e.g. ?project=lion-remix
+  const params = new URLSearchParams(location.search);
+  const projectId = params.get("project");
+  if (projectId){
+    const match = Array.from(select.options).find(o => o.value === projectId);
+    if (match) select.value = projectId;
+  }
+})();
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
