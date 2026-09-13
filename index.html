@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarkvoyagerLabs — Explore. Create. Evolve.</title>
+<meta name="description" content="DarkvoyagerLabs is an indie studio building games, apps, mods and Linux themes. Browse The Lost Transmission, CyberShadows, PlatinumOS and more — explore, create, evolve.">
+<meta name="keywords" content="DarkvoyagerLabs, indie games, indie apps, linux distro, HELIOS-9, The Lost Transmission, PlatinumOS, game dev, mods">
+<link rel="canonical" href="https://darkvoyagerlabs.netlify.app/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DarkvoyagerLabs">
+<meta property="og:title" content="DarkvoyagerLabs — Explore. Create. Evolve.">
+<meta property="og:description" content="Games, apps, mods and Linux themes from DarkvoyagerLabs. Browse the catalogue and see what's new.">
+<meta property="og:image" content="https://darkvoyagerlabs.netlify.app/banner.png">
+<meta property="og:url" content="https://darkvoyagerlabs.netlify.app/">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DarkvoyagerLabs — Explore. Create. Evolve.">
+<meta name="twitter:description" content="Games, apps, mods and Linux themes from DarkvoyagerLabs.">
+<meta name="twitter:image" content="https://darkvoyagerlabs.netlify.app/banner.png">
+
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/png" href="logo.png" id="favicon">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href="site.webmanifest">
+<script>
+/* Dark browser/OS theme -> normal logo.png. Light theme -> logo_light.png.
+   Keeps working live if the user flips their system theme mid-visit. */
+(function(){
+  var favicon = document.getElementById("favicon");
+  if (!favicon || !window.matchMedia) return;
+  var lightQuery = window.matchMedia("(prefers-color-scheme: light)");
+  function applyTheme(isLight){ favicon.href = isLight ? "logo_light.png" : "logo.png"; }
+  applyTheme(lightQuery.matches);
+  lightQuery.addEventListener("change", function(e){ applyTheme(e.matches); });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "DarkvoyagerLabs",
+  "url": "https://darkvoyagerlabs.netlify.app/",
+  "description": "Indie studio building games, apps, mods and Linux themes.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DarkvoyagerLabs"
+  }
+}
+</script>
+</head>
+<body>
+    
+    <div class="page-loader" id="page-loader" aria-hidden="true">
+  <img class="loader-logo" src="logo.png" alt="">
+  <div class="loader-bar"></div>
+  <div class="loader-text">Initializing<span class="cursor">&#9612;</span></div>
+</div>
+<script>
+(function(){
+  var loader = document.getElementById('page-loader');
+  if(!loader) return;
+  var minTime = 400;             // avoids a flash on fast loads
+  var start = Date.now();
+  function hide(){
+    var wait = Math.max(0, minTime - (Date.now() - start));
+    setTimeout(function(){
+      loader.classList.add('is-hidden');
+      setTimeout(function(){ loader.remove(); }, 600);
+    }, wait);
+  }
+  if(document.readyState === 'complete'){ hide(); }
+  else { window.addEventListener('load', hide); }
+  setTimeout(hide, 8000);        // safety net so it never gets stuck
+})();
+</script>
+
+<a class="visually-hidden" href="#main">Skip to content</a>
+
+<header>
+  <nav class="site-nav" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="DarkvoyagerLabs logo">
+      <span class="brand-name">Darkvoyager<span class="accent">Labs</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="connect.html">Connect</a>
+      <a class="nav-link" href="contribute.html">Contribute</a>
+    </div>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">&#8801;</button>
+  </nav>
+  <div class="nav-mobile-panel" role="menu">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+    <a href="connect.html">Connect</a>
+    <a href="contribute.html">Contribute</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-label="Featured showcase">
+    <div class="hero-track">
+      <div class="hero-slide"><img src="banner.png" alt="DarkvoyagerLabs banner" fetchpriority="high"></div>
+      <div class="hero-slide"><img src="web-covers/1.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/2.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/3.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/4.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/5.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/6.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/7.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/8.png" alt="" loading="lazy"></div>
+      <div class="hero-slide"><img src="web-covers/9.png" alt="" loading="lazy"></div>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-tagline">Explore. Create. Evolve.</h1>
+      <p class="hero-sub">// games, apps, mods &amp; linux builds from DarkvoyagerLabs</p>
+    </div>
+    <div class="hero-dots" aria-hidden="true">
+      <span class="is-active"></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <div class="search-field">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Search projects…" autocomplete="off" aria-label="Search projects">
+      </div>
+    </div>
+    <div class="search-suggestions" role="listbox"></div>
+  </div>
+
+  <section class="cards-section">
+    <div class="cards-heading">
+      <h2>Featured projects</h2>
+      <a class="view-all" href="projects.html">View all &rarr;</a>
+    </div>
+    <div class="cards-grid" data-card-grid="featured"
+         data-ids="thelosttransmission,folio,smarthomepage,platinumos,helios-9,cybershadows,leoos,surfer"></div>
+  </section>
+
+  <div class="feedback-btn-wrap">
+    <a class="feedback-btn" href="feedback.html">LEAVE FEEDBACK</a>
+  </div>
+
+  <section class="hub-section">
+    <div class="cards-heading">
+      <h2>Community &amp; support</h2>
+    </div>
+    <div class="hub-grid">
+
+      <a class="hub-card" href="wiki.html">
+        <div class="hub-icon" style="color:var(--cyan);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h3>Wiki</h3>
+        <p>Guides, docs and lore for every DarkvoyagerLabs project.</p>
+        <span class="hub-arrow">Open Wiki &rarr;</span>
+      </a>
+
+      <a class="hub-card" href="forum.html">
+        <div class="hub-icon" style="color:var(--blue);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Forum</h3>
+        <p>Talk builds, bugs and ideas with the community.</p>
+        <span class="hub-arrow">Open Forum &rarr;</span>
+      </a>
+
+      <div class="hub-card hub-card--contribute">
+        <div class="hub-icon" style="color:var(--lime);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>Contribute</h3>
+        <p>Support the studio directly, or jump into a project that's looking for help.</p>
+        <div class="hub-actions">
+          <a class="hub-btn hub-btn--coffee" href="donate.html">Buy us a Coffee</a>
+          <a class="hub-btn hub-btn--code" href="contribute-project.html">Contribute in a Project</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>&copy; <span id="year"></span> DarkvoyagerLabs. All rights reserved.</span>
+</footer>
+
+<script src="js/projects-data.js"></script>
+<script src="js/main.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -21,9 +21,21 @@
 <meta name="twitter:image" content="https://darkvoyagerlabs.netlify.app/banner.png">
 
 <meta name="theme-color" content="#05070a">
-<link rel="icon" type="image/png" href="logo.png">
+<link rel="icon" type="image/png" href="logo.png" id="favicon">
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="manifest" href="site.webmanifest">
+<script>
+/* Dark browser/OS theme -> normal logo.png. Light theme -> logo_light.png.
+   Keeps working live if the user flips their system theme mid-visit. */
+(function(){
+  var favicon = document.getElementById("favicon");
+  if (!favicon || !window.matchMedia) return;
+  var lightQuery = window.matchMedia("(prefers-color-scheme: light)");
+  function applyTheme(isLight){ favicon.href = isLight ? "logo_light.png" : "logo.png"; }
+  applyTheme(lightQuery.matches);
+  lightQuery.addEventListener("change", function(e){ applyTheme(e.matches); });
+})();
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,18 +119,16 @@
   <section class="cards-section">
     <div class="cards-grid" data-card-grid="all"></div>
   </section>
-  
-  <a class="feedback-btn" style="margin-left: 40%;" href="feedback.html">LEAVE FEEDBACK</a>
+
+  <div class="feedback-btn-wrap">
+    <a class="feedback-btn" href="feedback.html">LEAVE FEEDBACK</a>
+  </div>
 
 </main>
 
 <footer class="site-footer">
   <span>&copy; <span id="year"></span> DarkvoyagerLabs. All rights reserved.</span>
 </footer>
-
-<div class="modal-overlay" role="dialog" aria-modal="true">
-  <div class="modal-box"></div>
-</div>
 
 <script src="js/projects-data.js"></script>
 <script src="js/main.js"></script>
