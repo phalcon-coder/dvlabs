@@ -26,7 +26,13 @@
   --yellow: #ffd23f;
 
   --grad-scan: linear-gradient(90deg, var(--cyan) 0%, var(--lime) 25%, var(--yellow) 50%, var(--red) 75%, var(--blue) 100%);
-  --grad-scan-wide: linear-gradient(90deg, var(--cyan), var(--lime), var(--yellow), var(--red), var(--blue), var(--cyan));
+  --grad-scan-wide: linear-gradient(90deg,
+    var(--cyan)   0%,
+    var(--lime)  20%,
+    var(--yellow) 40%,
+    var(--red)   60%,
+    var(--blue)  80%,
+    var(--cyan) 100%);
 
   /* -- type -- */
   --f-display: 'Orbitron', 'Rajdhani', sans-serif;
@@ -297,8 +303,8 @@ input{ font-family: inherit; }
   animation: scan-drift 9s linear infinite;
 }
 @keyframes scan-drift{
-  0%{ background-position: 0% 0; }
-  100%{ background-position: 100% 0; }
+  0%   { background-position:   0% 0; }
+  100% { background-position: -300% 0; }
 }
 .hero-sub{
   font-family: var(--f-mono);
