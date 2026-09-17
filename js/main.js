@@ -1,12 +1,3 @@
-/* =========================================================
-   DarkvoyagerLabs — shared behavior
-   Handles: mobile nav toggle, scroll state, hero slider,
-   search + suggestions, project card grids, and the
-   contribute list. Project detail content itself lives on
-   its own static page (project-covers/<slug>/index.html) —
-   this file only builds the card previews that link there.
-   ========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHero();
@@ -179,6 +170,9 @@ function initCardGrids(){
       renderCards(grid, filtered);
     });
   }
+
+  // Featured carousel (index.html) — runs after the featured grid is populated.
+  initFeaturedCarousel();
 }
 
 function renderCards(grid, list){
@@ -207,6 +201,111 @@ function renderCards(grid, list){
     </a>
   `;
   }).join("");
+}
+
+/* ---------- FEATURED CAROUSEL (index.html) ---------- */
+function initFeaturedCarousel(){
+  const viewport = document.querySelector(".featured-viewport");
+  const track = document.querySelector(".cards-grid--carousel");
+  if (!viewport || !track) return;
+
+  const prevBtn = document.querySelector(".carousel-arrow--prev");
+  const nextBtn = document.querySelector(".carousel-arrow--next");
+
+  const AUTOPLAY_MS = 5000;   // stays static 5s between slides
+  let index = 0;
+  let timer = null;
+  let isDragging = false;
+
+  /* How far one "step" moves: one card width + the flex gap. */
+  function stepWidth(){
+    const card = track.querySelector(".project-card");
+    if (!card) return 0;
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    return card.getBoundingClientRect().width + gap;
+  }
+
+  function maxIndex(){
+    const step = stepWidth();
+    if (!step) return 0;
+    const perView = Math.max(1, Math.floor(viewport.clientWidth / step));
+    return Math.max(0, track.children.length - perView);
+  }
+
+  function goTo(i){
+    const max = maxIndex();
+    // wrap around for autoplay, clamp for manual
+    index = i > max ? 0 : (i < 0 ? max : i);
+    track.style.transform = `translateX(-${index * stepWidth()}px)`;
+    syncArrows();
+  }
+
+  function syncArrows(){
+    const max = maxIndex();
+    if (prevBtn) prevBtn.disabled = index <= 0;
+    if (nextBtn) nextBtn.disabled = index >= max;
+  }
+
+  function next(){ goTo(index + 1); }
+  function prev(){ goTo(index - 1); }
+
+  function startAutoplay(){
+    stopAutoplay();
+    timer = setInterval(next, AUTOPLAY_MS);
+  }
+  function stopAutoplay(){
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  if (nextBtn) nextBtn.addEventListener("click", () => { next(); startAutoplay(); });
+  if (prevBtn) prevBtn.addEventListener("click", () => { prev(); startAutoplay(); });
+
+  /* --- mouse / touch drag --- */
+  let startX = 0;
+  let startTranslate = 0;
+
+  function onDown(x){
+    isDragging = true;
+    startX = x;
+    startTranslate = -index * stepWidth();
+    track.style.transition = "none";
+    stopAutoplay();
+  }
+  function onMove(x){
+    if (!isDragging) return;
+    const delta = x - startX;
+    track.style.transform = `translateX(${startTranslate + delta}px)`;
+  }
+  function onUp(x){
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = "";       // restore CSS transition
+    const delta = x - startX;
+    const threshold = stepWidth() * 0.25;
+    if (delta < -threshold) index++;
+    else if (delta > threshold) index--;
+    goTo(index);
+    startAutoplay();
+  }
+
+  viewport.addEventListener("mousedown", e => onDown(e.clientX));
+  window.addEventListener("mousemove", e => onMove(e.clientX));
+  window.addEventListener("mouseup", e => onUp(e.clientX));
+
+  viewport.addEventListener("touchstart", e => onDown(e.touches[0].clientX), { passive: true });
+  viewport.addEventListener("touchmove", e => onMove(e.touches[0].clientX), { passive: true });
+  viewport.addEventListener("touchend", e => onUp(e.changedTouches[0].clientX));
+
+  /* pause while hovering so users can read */
+  viewport.addEventListener("mouseenter", stopAutoplay);
+  viewport.addEventListener("mouseleave", startAutoplay);
+
+  /* keep position sane on resize */
+  window.addEventListener("resize", () => goTo(index));
+
+  goTo(0);
+  startAutoplay();
 }
 
 /* ---------- CONTRIBUTE LIST (contribute.html) ---------- */
