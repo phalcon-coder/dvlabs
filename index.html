@@ -146,16 +146,19 @@
   </div>
 
   <section class="cards-section">
-    <div class="cards-heading">
-      <h2>Featured projects</h2>
-      <a class="view-all" href="projects.html">View all &rarr;</a>
-    </div>
-    <!-- Added wrapper + data-slider attributes -->
-    <div class="cards-slider-wrap">
-      <div class="cards-grid cards-grid--slider" data-card-grid="featured" data-slider
+  <div class="cards-heading">
+    <h2>Featured projects</h2>
+    <a class="view-all" href="projects.html">View all &rarr;</a>
+  </div>
+  <div class="featured-carousel">
+    <button class="carousel-arrow carousel-arrow--prev" aria-label="Previous projects">&#8249;</button>
+    <div class="featured-viewport">
+      <div class="cards-grid cards-grid--carousel" data-card-grid="featured"
            data-ids="thelosttransmission,folio,smarthomepage,platinumos,helios-9,cybershadows,leoos,surfer"></div>
     </div>
-  </section>
+    <button class="carousel-arrow carousel-arrow--next" aria-label="Next projects">&#8250;</button>
+  </div>
+</section>
 
   <div class="feedback-btn-wrap">
     <a class="feedback-btn" href="feedback.html">LEAVE FEEDBACK</a>
