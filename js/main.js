@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
   initNav();
   initHero();
   initSearch();
@@ -51,7 +52,7 @@ function markActiveNavLink(){
   });
 }
 
-/* ---------- HERO SLIDER (index.html) ---------- */
+/* ---------- HERO SLIDER (index.html) — crossfade ---------- */
 function initHero(){
   const track = document.querySelector(".hero-track");
   const dotsWrap = document.querySelector(".hero-dots");
@@ -65,8 +66,11 @@ function initHero(){
 
   function show(i){
     index = (i + total) % total;
-    track.style.transform = `translateX(-${index * 100}%)`;
-    dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
+    slides.forEach((s, si) => s.classList.toggle("is-active", si === index));
+    dots.forEach((d, di) => {
+      d.classList.remove("is-active");
+      if (di === index){ void d.offsetWidth; d.classList.add("is-active"); }
+    });
   }
 
   let timer = setInterval(() => show(index + 1), INTERVAL);
@@ -75,6 +79,7 @@ function initHero(){
   if (heroEl){
     heroEl.addEventListener("mouseenter", () => clearInterval(timer));
     heroEl.addEventListener("mouseleave", () => {
+      show(index);
       timer = setInterval(() => show(index + 1), INTERVAL);
     });
   }
@@ -331,4 +336,17 @@ function initContributeList(){
       <a class="ci-btn" href="contribute-project.html?project=${encodeURIComponent(p.slug)}">Contribute</a>
     </div>
   `).join("");
+}
+
+/* ---------- THEME (favicon follows the system theme live) ---------- */
+function initTheme(){
+  const icons = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
+  if (!icons.length || !window.matchMedia) return;
+  const q = window.matchMedia("(prefers-color-scheme: light)");
+  const apply = (light) => icons.forEach(l => {
+    const href = l.getAttribute("href").replace(/logo(_light)?\.png/, light ? "logo_light.png" : "logo.png");
+    l.setAttribute("href", href);
+  });
+  apply(q.matches);
+  q.addEventListener("change", e => apply(e.matches));
 }
