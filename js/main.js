@@ -190,7 +190,7 @@ function renderCards(grid, list){
     return `
     <a class="project-card" href="${projectUrl(p)}" data-id="${p.id}">
       <div class="card-media">
-        <img src="${p.images[0]}" alt="${escapeHtml(p.name)} cover art" loading="lazy">
+        <img src="${p.images[0]}" alt="${escapeHtml(p.name)} cover art" loading="lazy" decoding="async" width="800" height="600">
         <span class="card-type-badge">${escapeHtml(p.type)}</span>
       </div>
       <div class="card-body">
