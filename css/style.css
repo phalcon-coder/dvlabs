@@ -9,7 +9,7 @@
 @font-face{font-family:"Geist";src:url("../fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}
 @font-face{
   font-family:"Orbitron";
-  src:url("../fonts/orbitron.woff2") format("woff2");
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/orbitron:vf@5.3.0/latin-wght-normal.woff2) format('woff2-variations');
   font-weight:400 900;
   font-display:swap;
 }
