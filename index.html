@@ -23,25 +23,13 @@
 <meta name="twitter:description" content="Games, apps, mods and Linux themes from DarkvoyagerLabs.">
 <meta name="twitter:image" content="https://darkvoyagerlabs.netlify.app/banner.png">
 
-<meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/png" href="logo.png" id="favicon">
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="manifest" href="site.webmanifest">
-<script>
-/* Dark browser/OS theme -> normal logo.png. Light theme -> logo_light.png.
-   Keeps working live if the user flips their system theme mid-visit. */
-(function(){
-  var favicon = document.getElementById("favicon");
-  if (!favicon || !window.matchMedia) return;
-  var lightQuery = window.matchMedia("(prefers-color-scheme: light)");
-  function applyTheme(isLight){ favicon.href = isLight ? "logo_light.png" : "logo.png"; }
-  applyTheme(lightQuery.matches);
-  lightQuery.addEventListener("change", function(e){ applyTheme(e.matches); });
-})();
-</script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>(function(d){d.classList.add('js');try{if(sessionStorage.getItem('dv-seen'))d.classList.add('seen')}catch(e){}if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('fx');setTimeout(function(){if(!window.__fxOk)d.classList.remove('fx')},5000)}})(document.documentElement)</script>
+<meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef1f6" media="(prefers-color-scheme: light)">
 <link rel="stylesheet" href="css/style.css">
 
 <script type="application/ld+json">
@@ -61,26 +49,20 @@
 <body>
     
     <div class="page-loader" id="page-loader" aria-hidden="true">
-  <img class="loader-logo" src="logo.png" alt="">
+  <picture><source media="(prefers-color-scheme: light)" srcset="logo_light.png"><img class="loader-logo" src="logo.png" alt=""></picture>
   <div class="loader-bar"></div>
   <div class="loader-text">Initializing<span class="cursor">&#9612;</span></div>
 </div>
 <script>
 (function(){
-  var loader = document.getElementById('page-loader');
-  if(!loader) return;
-  var minTime = 400;             // avoids a flash on fast loads
-  var start = Date.now();
-  function hide(){
-    var wait = Math.max(0, minTime - (Date.now() - start));
-    setTimeout(function(){
-      loader.classList.add('is-hidden');
-      setTimeout(function(){ loader.remove(); }, 600);
-    }, wait);
-  }
-  if(document.readyState === 'complete'){ hide(); }
-  else { window.addEventListener('load', hide); }
-  setTimeout(hide, 8000);        // safety net so it never gets stuck
+  var d=document.documentElement,l=document.getElementById('page-loader'),done=false;
+  function ready(){window.__dvReady=true;try{sessionStorage.setItem('dv-seen','1')}catch(e){}document.dispatchEvent(new Event('dv:ready'))}
+  if(!l||d.classList.contains('seen')){if(l)l.remove();ready();return}
+  var t0=Date.now();
+  function hide(){if(done)return;done=true;var w=Math.max(0,1100-(Date.now()-t0));
+    setTimeout(function(){l.classList.add('is-hidden');setTimeout(ready,350);setTimeout(function(){l.remove()},1200)},w)}
+  var go=function(){(document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(function(r){setTimeout(r,1500)})]):Promise.resolve()).then(hide)};if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);
+  setTimeout(hide,8000);
 })();
 </script>
 
@@ -89,7 +71,7 @@
 <header>
   <nav class="site-nav" aria-label="Primary">
     <a class="nav-brand" href="index.html">
-      <img src="logo.png" alt="DarkvoyagerLabs logo">
+      <picture><source media="(prefers-color-scheme: light)" srcset="logo_light.png"><img src="logo.png" alt="DarkvoyagerLabs logo"></picture>
       <span class="brand-name">Darkvoyager<span class="accent">Labs</span></span>
     </a>
     <div class="nav-links">
@@ -161,7 +143,7 @@
 </section>
 
   <div class="feedback-btn-wrap">
-    <a class="feedback-btn" href="feedback.html">LEAVE FEEDBACK</a>
+    <a class="feedback-btn" href="feedback.html">Leave feedback</a>
   </div>
 
   <section class="hub-section">
@@ -211,6 +193,10 @@
 
 <script src="js/projects-data.js"></script>
 <script src="js/main.js"></script>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/fx.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
